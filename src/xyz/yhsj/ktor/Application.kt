@@ -18,6 +18,7 @@ import xyz.yhsj.ktor.routes.commonRoutes
 import xyz.yhsj.ktor.routes.userRoutes
 import xyz.yhsj.ktor.status.statusPage
 import java.io.File
+import java.text.DateFormat
 
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -25,6 +26,16 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    if (!testing) {
+        install(HttpsRedirect) {
+            // The port to redirect to. By default 443, the default HTTPS port.
+            sslPort = 443
+            // 301 Moved Permanently, or 302 Found redirect.
+            permanentRedirect = true
+        }
+    }
+
     //Cookie支持
     install(Sessions) {
         cookie<AppSession>("App_SESSION", directorySessionStorage(File(".sessions"))) {
@@ -59,7 +70,10 @@ fun Application.module(testing: Boolean = false) {
 
     //序列化
     install(ContentNegotiation) {
-        gson {}
+        gson {
+            setDateFormat(DateFormat.LONG)
+            setPrettyPrinting()
+        }
     }
     //模块依赖注入
     install(Koin) {

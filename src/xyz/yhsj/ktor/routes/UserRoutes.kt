@@ -34,6 +34,8 @@ fun Route.userRoutes() {
             session.count += 1
             call.setSession(session)
 
+            logger.error(session.name)
+
             val users = userService.getUsers(session)
             call.success(users)
         }

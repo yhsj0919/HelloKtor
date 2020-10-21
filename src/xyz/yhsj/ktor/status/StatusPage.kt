@@ -13,7 +13,7 @@ fun StatusPages.Configuration.statusPage() {
         call.respond(HttpStatusCode.OK, mapOf("msg" to "500"))
     }
     exception<Throwable> {
-        it.printStackTrace()
+        println("出现错误" + it.message)
         call.respond(HttpStatusCode.OK, mapOf("msg" to "error :${it.message}"))
     }
 }

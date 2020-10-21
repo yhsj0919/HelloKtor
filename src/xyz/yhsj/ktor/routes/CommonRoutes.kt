@@ -1,17 +1,16 @@
 package xyz.yhsj.ktor.routes
 
 import io.ktor.application.*
-import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.ext.session
-import xyz.yhsj.ktor.ext.setSession
 
 fun Route.commonRoutes() {
     get("/") {
-        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+        call.respondRedirect("index.html")
+//        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
     }
 
     // Static feature. Try to access `/static/ktor_logo.svg`
