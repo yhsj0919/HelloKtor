@@ -40,6 +40,21 @@ fun Route.userRoutes() {
             call.success(users)
         }
 
+        get("/sum") {
+            val session = call.session<AppSession>()
+
+            val myDBName = session.name ?: "DB" + (Math.random() * 10).toInt()
+            session.name = myDBName
+            session.count += 1
+            call.setSession(session)
+
+            logger.error(session.name)
+
+            val users = userService.sumBy(session)
+            call.success(users)
+        }
+
+
         post<RegisterRequest>("/register") { request ->
             val user = User(
                 userName = request.userName,
