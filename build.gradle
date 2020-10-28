@@ -54,6 +54,7 @@ dependencies {
     implementation "io.ktor:ktor-server-sessions:$ktor_version"
     implementation "io.ktor:ktor-gson:$ktor_version"
     implementation "io.ktor:ktor-auth:$ktor_version"
+    implementation "javax.validation:validation-api:2.0.1.Final"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
     // Koin for Ktor Kotlin

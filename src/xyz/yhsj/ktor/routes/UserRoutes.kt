@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.dbName
 import xyz.yhsj.ktor.entity.RegisterRequest
-import xyz.yhsj.ktor.entity.User
-import xyz.yhsj.ktor.ext.session
-import xyz.yhsj.ktor.ext.setSession
-import xyz.yhsj.ktor.ext.success
+import xyz.yhsj.ktor.entity.user.SysUser
+import xyz.yhsj.ktor.ext.*
 import xyz.yhsj.ktor.service.UserService
 
 fun Route.userRoutes() {
@@ -27,6 +25,9 @@ fun Route.userRoutes() {
     route("/users") {
         get { call.success(mapOf("name" to "users")) }
         get("/list") {
+
+            println(call.sessionId())
+
             val session = call.session<AppSession>()
 
             val myDBName = session.name ?: "DB" + (Math.random() * 10).toInt()
@@ -56,12 +57,16 @@ fun Route.userRoutes() {
 
 
         post<RegisterRequest>("/register") { request ->
-            val user = User(
+            val user = SysUser(
                 userName = request.userName,
                 password = request.password
             )
+
+            user.validated(){
+
+            }
             dataBase
-                .getCollection<User>()
+                .getCollection<SysUser>()
                 .insertOne(user)
             call.success(HttpStatusCode.OK)
         }

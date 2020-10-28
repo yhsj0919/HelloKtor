@@ -9,7 +9,8 @@ import xyz.yhsj.ktor.ext.session
 
 fun Route.commonRoutes() {
     get("/") {
-        call.respondRedirect("index.html")
+//        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+        call.respondRedirect("/index.html", permanent = true)
 //        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
     }
 

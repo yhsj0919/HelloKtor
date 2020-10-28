@@ -5,17 +5,18 @@ import org.litote.kmongo.coroutine.aggregate
 import org.litote.kmongo.group
 import org.litote.kmongo.sum
 import xyz.yhsj.ktor.auth.AppSession
-import xyz.yhsj.ktor.entity.User
+import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.getCollection
 import java.math.BigDecimal
 
 class UserService(private val db: CoroutineClient) {
 
-    suspend fun getUsers(session: AppSession): List<User> {
-        val userCollection = db.getCollection<User>(session.name!!)
+    suspend fun getUsers(session: AppSession): List<SysUser> {
+
+        val userCollection = db.getCollection<SysUser>(session.name!!)
 
         val user = (0..5).map {
-            User(
+            SysUser(
                 userName = "request.userName",
                 password = "request.password",
                 money = BigDecimal.valueOf((Math.random() * 10000).toInt() / 100.0)
@@ -24,6 +25,8 @@ class UserService(private val db: CoroutineClient) {
         userCollection
             .insertMany(user)
 
+        userCollection.find().skip(0).limit(10)
+
         return userCollection
             .find()
             .toList()
@@ -31,11 +34,11 @@ class UserService(private val db: CoroutineClient) {
 
 
     suspend fun sumBy(session: AppSession): BigDecimal {
-        val userCollection = db.getCollection<User>(session.name!!)
+        val userCollection = db.getCollection<SysUser>(session.name!!)
         val result = userCollection.aggregate<Result>(
             group(
-                User::userName,
-                Result::count sum User::money,
+                SysUser::userName,
+                Result::count sum SysUser::money,
             ),
         )
 
