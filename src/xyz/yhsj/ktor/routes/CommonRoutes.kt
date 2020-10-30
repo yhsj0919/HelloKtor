@@ -9,9 +9,7 @@ import xyz.yhsj.ktor.ext.session
 
 fun Route.commonRoutes() {
     get("/") {
-//        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         call.respondRedirect("/index.html", permanent = true)
-//        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
     }
 
     // Static feature. Try to access `/static/ktor_logo.svg`
@@ -21,7 +19,6 @@ fun Route.commonRoutes() {
 
     get("/session/increment") {
         val session = call.session<AppSession>()
-//        call.setSession(session.copy(count = session.count + 1))
         call.respondText("Counter is ${session.count}. Refresh to increment.")
     }
 

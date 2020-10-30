@@ -25,7 +25,7 @@ fun Authentication.Configuration.sessionCheck() {
             session
         }
         skipWhen { call ->
-            val skipPath = arrayListOf("/users/list")
+            val skipPath = arrayListOf("/user/login","/user/list")
             call.request.path() in skipPath
         }
     }

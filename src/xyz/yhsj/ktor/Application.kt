@@ -10,14 +10,17 @@ import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
 import org.koin.ktor.ext.Koin
+import org.litote.kmongo.Id
 import org.slf4j.event.Level
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.auth.sessionCheck
+import xyz.yhsj.ktor.ext.IdSerializer
 import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.routes.commonRoutes
 import xyz.yhsj.ktor.routes.userRoutes
 import xyz.yhsj.ktor.status.statusPage
 import java.io.File
+import java.lang.reflect.Modifier
 import java.text.DateFormat
 
 
@@ -27,14 +30,14 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    if (!testing) {
-        install(HttpsRedirect) {
-            // The port to redirect to. By default 443, the default HTTPS port.
-            sslPort = 443
-            // 301 Moved Permanently, or 302 Found redirect.
-            permanentRedirect = true
-        }
-    }
+//    if (!testing) {
+//        install(HttpsRedirect) {
+//            // The port to redirect to. By default 443, the default HTTPS port.
+//            sslPort = 443
+//            // 301 Moved Permanently, or 302 Found redirect.
+//            permanentRedirect = true
+//        }
+//    }
 
     //Cookie支持
     install(Sessions) {
@@ -73,6 +76,12 @@ fun Application.module(testing: Boolean = false) {
         gson {
             setDateFormat(DateFormat.LONG)
             setPrettyPrinting()
+            //序列化空值
+//            serializeNulls()
+            //忽略修饰符，这里仅忽略static类型的
+            excludeFieldsWithModifiers(Modifier.STATIC)
+            //序列化Id
+            registerTypeHierarchyAdapter(Id::class.java, IdSerializer())
         }
     }
     //模块依赖注入

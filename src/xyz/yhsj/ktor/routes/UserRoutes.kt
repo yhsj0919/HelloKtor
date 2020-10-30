@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.dbName
 import xyz.yhsj.ktor.entity.RegisterRequest
+import xyz.yhsj.ktor.entity.resp.CommonResp
 import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.*
 import xyz.yhsj.ktor.service.UserService
+import xyz.yhsj.ktor.validator.ValidationGroup
 
 fun Route.userRoutes() {
     val userService by inject<UserService>()
@@ -22,23 +24,26 @@ fun Route.userRoutes() {
     val dataBase: CoroutineDatabase by lazy {
         client.getDatabase(dbName)
     }
-    route("/users") {
-        get { call.success(mapOf("name" to "users")) }
+
+    route("/user") {
+        /**
+         * 登录
+         */
+        post<SysUser>("/login") { user ->
+            call.success {
+                user.validated(ValidationGroup.Login::class.java) {
+                    userService.login(it)
+                }
+            }
+        }
+
+        /**
+         * 列表
+         */
         get("/list") {
 
-            println(call.sessionId())
-
-            val session = call.session<AppSession>()
-
-            val myDBName = session.name ?: "DB" + (Math.random() * 10).toInt()
-            session.name = myDBName
-            session.count += 1
-            call.setSession(session)
-
-            logger.error(session.name)
-
-            val users = userService.getUsers(session)
-            call.success(users)
+            val users = userService.getUsers()
+            call.success { users }
         }
 
         get("/sum") {
@@ -52,7 +57,7 @@ fun Route.userRoutes() {
             logger.error(session.name)
 
             val users = userService.sumBy(session)
-            call.success(users)
+            call.success { users }
         }
 
 
@@ -62,13 +67,13 @@ fun Route.userRoutes() {
                 password = request.password
             )
 
-            user.validated(){
+            user.validated() {
 
             }
             dataBase
                 .getCollection<SysUser>()
                 .insertOne(user)
-            call.success(HttpStatusCode.OK)
+            call.success { HttpStatusCode.OK }
         }
     }
 }

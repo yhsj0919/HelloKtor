@@ -1,15 +1,18 @@
 package xyz.yhsj.ktor.validator
 
 
-import xyz.yhsj.ktor.ext.json
-import java.io.Serializable
 import java.util.*
 import javax.validation.Validation
 import javax.validation.groups.Default
+import org.hibernate.validator.HibernateValidator
+import javax.validation.Validator
+
 
 object ValidationUtils {
 
-    private val validator = Validation.buildDefaultValidatorFactory().validator
+    private val validator =
+        Validation.byProvider(HibernateValidator::class.java).configure().failFast(false).buildValidatorFactory()
+            .validator
 
     fun <T> validateEntity(obj: T?, vararg groups: Class<*>): ValidationResult {
         val result = ValidationResult()

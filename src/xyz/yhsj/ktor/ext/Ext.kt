@@ -43,23 +43,25 @@ inline fun <reified T : Any> new(vararg params: Any) =
 //}
 
 
-suspend fun ApplicationCall.success(data: Any? = null) {
+suspend fun ApplicationCall.success(block: suspend () -> Any?) {
+
+    val data = block()
+
     if (data == null) {
         this.respond(HttpStatusCode.OK, CommonResp.empty())
     } else {
-        this.respond(HttpStatusCode.OK, CommonResp.success(data = data))
+        this.respond(HttpStatusCode.OK, data)
     }
 }
 
 inline fun <reified T : Any> CoroutineClient.getCollection(dbName: String) = this.getDatabase(dbName).getCollection<T>()
 
 
-fun Any.validated(vararg groups: Class<*>, block: () -> Any): Any? {
+suspend fun <T : Any> T.validated(vararg groups: Class<*>, block: suspend (data: T) -> Any): Any? {
     val result = ValidationUtils.validateEntity(this, *groups)
-
     return if (result.hasErrors) {
-        result.errorMsg?.values?.first()
+        CommonResp.error(msg = result.errorMsg?.values?.first() ?: "未知参数错误")
     } else {
-        block()
+        block(this)
     }
 }
