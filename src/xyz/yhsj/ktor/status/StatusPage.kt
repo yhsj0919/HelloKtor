@@ -1,5 +1,6 @@
 package xyz.yhsj.ktor.status
 
+import com.google.gson.JsonSyntaxException
 import com.mongodb.ErrorCategory
 import com.mongodb.MongoClientException
 import com.mongodb.MongoWriteException
@@ -13,12 +14,18 @@ fun StatusPages.Configuration.statusPage() {
     status(HttpStatusCode.NotFound) {
         call.respond(HttpStatusCode.OK, CommonResp.notFound(msg = "路径不存在"))
     }
+    status(HttpStatusCode.UnsupportedMediaType) {
+        call.respond(HttpStatusCode.OK, CommonResp.error(msg = "不支持的媒体类型"))
+    }
+
+    status(HttpStatusCode.UnsupportedMediaType) {
+        call.respond(HttpStatusCode.OK, CommonResp.error(msg = "不支持的媒体类型"))
+    }
+
     status(HttpStatusCode.InternalServerError) {
-        call.respond(HttpStatusCode.OK, CommonResp.notFound(msg = "服务器异常"))
+        call.respond(HttpStatusCode.OK, CommonResp.error(msg = "服务器异常"))
     }
     exception<Exception> {
-        it.printStackTrace()
-        println("出现错误:" + it.message)
         call.respond(
             HttpStatusCode.OK, when (it) {
                 is MongoWriteException -> {
@@ -39,7 +46,15 @@ fun StatusPages.Configuration.statusPage() {
                 is MongoClientException -> {
                     CommonResp.error(msg = "数据库异常:${it.message}")
                 }
+                is JsonSyntaxException -> {
+                    CommonResp.error(msg = "JSON数据格式错误")
+                }
+                is ContentTransformationException -> {
+                    CommonResp.error(msg = "JSON数据转换错误")
+                }
                 else -> {
+                    it.printStackTrace()
+                    println("出现错误:" + it.message)
                     CommonResp.error(msg = "服务器异常")
                 }
             }

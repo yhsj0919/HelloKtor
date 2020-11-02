@@ -17,12 +17,4 @@ fun Route.commonRoutes() {
         resources("static")
     }
 
-    get("/session/increment") {
-        val session = call.session<AppSession>()
-        call.respondText("Counter is ${session.count}. Refresh to increment.")
-    }
-
-    get("/json/gson") {
-        call.respond(mapOf("hello" to "world"))
-    }
 }

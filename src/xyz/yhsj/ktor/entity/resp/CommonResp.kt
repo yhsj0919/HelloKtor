@@ -63,6 +63,8 @@ class CommonResp(
 
     }
 
+    fun isSuccess(): Boolean = code == 200
+
     override fun toString(): String {
         return this.json()
     }
