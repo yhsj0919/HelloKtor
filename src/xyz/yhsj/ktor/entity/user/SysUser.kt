@@ -11,6 +11,8 @@ data class SysUser(
     val id: Id<SysUser> = newId(),
     @field: NotBlank(message = "用户名不可为空", groups = [ValidationGroup.Login::class, ValidationGroup.Add::class])
     var userName: String? = null,
+    //Gson序列化反序列化忽略，
+    //@Expose(serialize = true, deserialize = true)
     @Transient
     @field: NotBlank(message = "密码不可为空", groups = [ValidationGroup.Login::class, ValidationGroup.Add::class])
     var password: String? = null,

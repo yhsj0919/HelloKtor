@@ -9,6 +9,7 @@ import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
+import kotlinx.coroutines.runBlocking
 import org.koin.ktor.ext.Koin
 import org.litote.kmongo.Id
 import org.slf4j.event.Level
@@ -22,6 +23,9 @@ import xyz.yhsj.ktor.status.statusPage
 import java.io.File
 import java.lang.reflect.Modifier
 import java.text.DateFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.concurrent.timer
 
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -111,6 +115,13 @@ fun Application.module(testing: Boolean = false) {
         }
         //下面的不含权限验证
         commonRoutes()
+    }
+
+    runBlocking {
+        //测试循环任务
+        timer(startAt = Date(), period = 60 * 1000, action = {
+            println(LocalDateTime.now())
+        })
     }
 }
 

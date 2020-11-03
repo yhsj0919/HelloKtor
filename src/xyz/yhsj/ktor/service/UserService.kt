@@ -66,8 +66,6 @@ class UserService(private val db: CoroutineClient) {
 //                Result::count sum SysUser::money,
 //            ),
 //        )
-
-
         return BigDecimal.valueOf(0)
     }
 

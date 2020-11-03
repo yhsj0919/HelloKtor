@@ -7,7 +7,9 @@ import javax.validation.groups.Default
 import org.hibernate.validator.HibernateValidator
 import javax.validation.Validator
 
-
+/**
+ * 校验工具
+ */
 object ValidationUtils {
 
     private val validator =
