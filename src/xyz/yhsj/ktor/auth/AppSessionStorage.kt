@@ -30,7 +30,7 @@ fun appSessionStorage(rootDir: File, cached: Boolean = true, timeOut: Long = 600
         false -> DirectoryStorage(rootDir)
     }
     if (timeOut > 0) {
-        logger.debug("尝试开启携程清理session文件")
+        logger.info("尝试开启携程清理session文件")
         scope.launch(Dispatchers.IO) {
             //测试循环任务
             timer(startAt = Date(), period = 10 * 1000, action = {
@@ -41,7 +41,7 @@ fun appSessionStorage(rootDir: File, cached: Boolean = true, timeOut: Long = 600
                     }
                     .forEach {
                         scope.launch(Dispatchers.IO) {
-                            logger.debug("清理Session:${it.id}")
+                            logger.info("清理Session:${it.id}")
                             storage.invalidate(it.id)
                         }
                     }
