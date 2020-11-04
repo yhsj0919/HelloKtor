@@ -10,12 +10,9 @@ import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
 import io.ktor.util.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.ktor.ext.Koin
 import org.litote.kmongo.Id
 import org.slf4j.event.Level
-import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.auth.sessionCheck
 import xyz.yhsj.ktor.auth.setSession
 import xyz.yhsj.ktor.ext.IdSerializer
@@ -23,12 +20,8 @@ import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.routes.commonRoutes
 import xyz.yhsj.ktor.routes.userRoutes
 import xyz.yhsj.ktor.status.statusPage
-import java.io.File
 import java.lang.reflect.Modifier
 import java.text.DateFormat
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.concurrent.timer
 
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -55,7 +48,7 @@ fun Application.module(testing: Boolean = false) {
     install(AutoHeadResponse)
     //日志
     install(CallLogging) {
-        level = Level.INFO
+        level = Level.DEBUG
         filter { call -> call.request.path().startsWith("/") }
     }
     //跨域
