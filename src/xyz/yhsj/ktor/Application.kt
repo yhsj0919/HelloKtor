@@ -9,12 +9,15 @@ import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
+import io.ktor.util.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.ktor.ext.Koin
 import org.litote.kmongo.Id
 import org.slf4j.event.Level
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.auth.sessionCheck
+import xyz.yhsj.ktor.auth.setSession
 import xyz.yhsj.ktor.ext.IdSerializer
 import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.routes.commonRoutes
@@ -30,6 +33,7 @@ import kotlin.concurrent.timer
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@InternalAPI
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
@@ -45,9 +49,7 @@ fun Application.module(testing: Boolean = false) {
 
     //Cookie支持
     install(Sessions) {
-        cookie<AppSession>("App_SESSION", directorySessionStorage(File(".sessions"))) {
-            cookie.extensions["SameSite"] = "lax"
-        }
+        setSession()
     }
     //请求头
     install(AutoHeadResponse)
@@ -117,12 +119,7 @@ fun Application.module(testing: Boolean = false) {
         commonRoutes()
     }
 
-    runBlocking {
-        //测试循环任务
-        timer(startAt = Date(), period = 60 * 1000, action = {
-            println(LocalDateTime.now())
-        })
-    }
+
 }
 
 

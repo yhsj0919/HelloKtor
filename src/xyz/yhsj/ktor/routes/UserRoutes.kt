@@ -30,22 +30,11 @@ fun Route.userRoutes() {
         postExt<SysUser>("/register", ValidationGroup.Add::class.java) { user, _ ->
             userService.register(user)
         }
-
-        post<SysUser>("/register") { user ->
-            call.success {
-                user.validated(ValidationGroup.Add::class.java) {
-                    userService.register(user)
-                }
-            }
-        }
-
-
+        
         /**
          * 列表
          */
         postExt("/list") { session ->
-            println(session.getUser()?.userName)
-            println(session.time)
             userService.getUsers()
         }
 
