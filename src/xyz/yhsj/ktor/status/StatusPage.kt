@@ -38,7 +38,7 @@ fun StatusPages.Configuration.statusPage() {
                                 .last()
                                 .replace(" ", "")
                                 .replace("\"", "'")
-                            CommonResp.error(msg = "数据库唯一键重复:$msg")
+                            CommonResp.error(msg = "字段重复:$msg")
                         }
                         else -> CommonResp.error(msg = "未知数据库异常:${it.error.message}")
                     }

@@ -18,6 +18,7 @@ import xyz.yhsj.ktor.auth.setSession
 import xyz.yhsj.ktor.ext.IdSerializer
 import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.routes.commonRoutes
+import xyz.yhsj.ktor.routes.companyRoutes
 import xyz.yhsj.ktor.routes.userRoutes
 import xyz.yhsj.ktor.status.statusPage
 import java.lang.reflect.Modifier
@@ -105,7 +106,10 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         //这个是带权限验证的
-        authenticate {
+        authenticate("admin") {
+            companyRoutes()
+        }
+        authenticate("basic") {
             userRoutes()
         }
         //下面的不含权限验证

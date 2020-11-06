@@ -43,7 +43,22 @@ fun Sessions.Configuration.setSession() {
 
 
 fun Authentication.Configuration.sessionCheck() {
-    session<AppSession> {
+    session<AppSession>(name = "admin") {
+        challenge {
+            call.respond(HttpStatusCode.OK, CommonResp.error(msg = "你可能走错地方了~"))
+        }
+        validate { session ->
+            if (session.getUser()?.type != -1) {
+                null
+            } else {
+                //这里返回null就会调用challenge
+                session
+            }
+
+        }
+    }
+
+    session<AppSession>(name = "basic") {
         challenge {
             call.respond(HttpStatusCode.OK, CommonResp.login())
         }
@@ -52,7 +67,7 @@ fun Authentication.Configuration.sessionCheck() {
             session
         }
         skipWhen { call ->
-            val skipPath = arrayListOf("/user/login", "/user/register")
+            val skipPath = arrayListOf("/login")
             call.request.path() in skipPath
         }
     }

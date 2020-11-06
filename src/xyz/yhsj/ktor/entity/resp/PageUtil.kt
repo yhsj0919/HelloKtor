@@ -4,20 +4,24 @@ package xyz.yhsj.ktor.entity.resp
  * 根据传入的当前多少页
  *
  * @param size
- * @param number
+ * @param page
  * @param totalElements
  */
 class PageUtil(
     // 每页大小
-    var size: Int, number: Int,
+    var size: Int,
+    //当前页数
+    page: Int,
     // 总共有多少条数据
-    var totalElements: Long
+    var totalElements: Long,
+
+    content: List<Any>?
 ) {
 
     /**
      * 当前页为第几页
      */
-    var number: Int = 0
+    var page: Int = 0
 
     /**
      * 是否为第一页
@@ -51,18 +55,16 @@ class PageUtil(
 
     init {
 
-        this.number = if (number < 0) 0 else number
+        this.page = if (page < 0) 0 else page
 
         this.totalPages = if (totalElements % size == 0L) totalElements / size else totalElements / size + 1
 
-        this.isFirst = number == 0
+        this.isFirst = page == 0
 
-        this.isLast = number + 1 >= this.totalPages
+        this.isLast = page + 1 >= this.totalPages
 
-    }
+        this.content = content
 
-    fun setTotalPages(totalPages: Int) {
-        this.totalPages = totalPages.toLong()
     }
 
 

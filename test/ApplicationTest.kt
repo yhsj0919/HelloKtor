@@ -3,9 +3,11 @@ package xyz.yhsj
 import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*
+import io.ktor.util.*
 import xyz.yhsj.ktor.module
 
 class ApplicationTest {
+    @InternalAPI
     @Test
     fun testRoot() {
         withTestApplication({ module() }) {

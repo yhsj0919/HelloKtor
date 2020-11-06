@@ -12,25 +12,26 @@ import xyz.yhsj.ktor.validator.ValidationGroup
 fun Route.userRoutes() {
     val userService by inject<UserService>()
 //    val logger: Logger = LoggerFactory.getLogger("userRoutes")
+    /**
+     * 登录
+     */
+    postExt<SysUser>("/login", ValidationGroup.Login::class.java) { user, _ ->
+        val rasp = userService.login(user)
+        if (rasp.isSuccess()) {
+            call.setSession(AppSession(user = (rasp.data as SysUser?)?.json()))
+        }
+        rasp
+    }
 
     route("/user") {
-        /**
-         * 登录
-         */
-        postExt<SysUser>("/login", ValidationGroup.Login::class.java) { user, _ ->
-            val rasp = userService.login(user)
-            if (rasp.isSuccess()) {
-                call.setSession(AppSession(user = (rasp.data as SysUser?)?.json()))
-            }
-            rasp
-        }
+
         /**
          * 注册
          */
         postExt<SysUser>("/register", ValidationGroup.Add::class.java) { user, _ ->
             userService.register(user)
         }
-        
+
         /**
          * 列表
          */
