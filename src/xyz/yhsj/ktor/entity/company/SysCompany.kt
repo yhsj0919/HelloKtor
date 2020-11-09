@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull
 data class SysCompany(
     @field:NotBlank(message = "ID不可为空", groups = [ValidationGroup.Update::class, ValidationGroup.Delete::class])
     @BsonId
-    val id: Id<SysCompany> = newId(),
+    val id: Id<SysCompany>? = null,
     //公司名称
     @field:NotBlank(message = "公司名称不可为空", groups = [ValidationGroup.Add::class])
     var name: String? = null,
@@ -25,15 +25,10 @@ data class SysCompany(
 
     //到期时间
     @field:NotNull(message = "到期时间不可为空", groups = [ValidationGroup.Add::class])
-    var expirationTime: Date? = null,
+    var expirationTime: Long? = null,
     //状态0,正常,1禁用
     var status: Int? = null,
 
     var lat: Float? = null,
     var lon: Float? = null,
-
-    //是否删除
-    var deleted: Int? = null,
-    //备注
-    var note: String? = null
-): BaseEntity()
+) : BaseEntity()

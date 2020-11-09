@@ -6,7 +6,7 @@ import org.litote.kmongo.newId
 
 data class SysPassword(
     @BsonId
-    val id: Id<SysPassword> = newId(),
+    val id: Id<SysPassword>? = newId(),
     var user: Id<SysUser>? = null,
     var password: String? = null,
 )

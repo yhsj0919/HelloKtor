@@ -112,9 +112,10 @@ inline fun <reified R : Any> Route.postExt(
 ): Route {
     return route(path, HttpMethod.Post) {
         handle {
-            val data: R = call.receive()
+            //这里初始化一个空参数，
+            val data: R = call.receiveOrNull() ?: new()
             call.success {
-                data?.validated(*validatedGroups) {
+                data.validated(*validatedGroups) {
                     //这里session不为空，前面有校验，需要session的校验通过才会来到这里，不需要session的不关注这个属性
                     body(data, call.session())
                 }

@@ -11,6 +11,7 @@ import xyz.yhsj.ktor.entity.resp.CommonResp
 import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.fromJson
 import xyz.yhsj.ktor.ext.json
+import xyz.yhsj.ktor.ext.sessionOrNull
 import java.io.File
 import java.util.*
 
@@ -45,7 +46,12 @@ fun Sessions.Configuration.setSession() {
 fun Authentication.Configuration.sessionCheck() {
     session<AppSession>(name = "admin") {
         challenge {
-            call.respond(HttpStatusCode.OK, CommonResp.error(msg = "你可能走错地方了~"))
+            val session = call.sessionOrNull<AppSession>()
+            if (session != null && session.getUser()?.companyId == null) {
+                call.respond(HttpStatusCode.OK, CommonResp.error(msg = "你可能走错地方了~"))
+            } else {
+                call.respond(HttpStatusCode.OK, CommonResp.login())
+            }
         }
         validate { session ->
             if (session.getUser()?.type != -1) {
@@ -54,23 +60,32 @@ fun Authentication.Configuration.sessionCheck() {
                 //这里返回null就会调用challenge
                 session
             }
-
         }
     }
 
     session<AppSession>(name = "basic") {
         challenge {
-            call.respond(HttpStatusCode.OK, CommonResp.login())
+            val session = call.sessionOrNull<AppSession>()
+            if (session != null && session.getUser()?.companyId == null) {
+                call.respond(HttpStatusCode.OK, CommonResp.error(msg = "换个普通账号来吧"))
+            } else {
+                call.respond(HttpStatusCode.OK, CommonResp.login())
+            }
         }
         validate { session ->
-            //这里返回null就会调用challenge
-            session
+            return@validate if (session.getUser()?.companyId == null) {
+                null
+            } else {
+                //这里返回null就会调用challenge
+                session
+            }
         }
         skipWhen { call ->
             val skipPath = arrayListOf("/login")
             call.request.path() in skipPath
         }
     }
+
 }
 
 

@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.commitTransactionAndAwait
 import org.litote.kmongo.eq
+import org.litote.kmongo.group
 import org.litote.kmongo.newId
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.dbName
@@ -54,8 +55,10 @@ class UserService(private val db: CoroutineClient) {
     /**
      * 注册
      */
-    suspend fun register(params: SysUser): Any {
-        val user = params.copy(id = newId(), deleted = 0, type = 0)
+    suspend fun register(params: SysUser, session: AppSession): Any {
+        val user = params.copy(type = 0)
+        user.deleted = 0
+        user.companyId = session.getUser()?.companyId
         userDB.insertOne(user)
         pwdDB.insertOne(SysPassword(user = user.id, password = user.passWord))
         return CommonResp.success()
@@ -71,7 +74,7 @@ class UserService(private val db: CoroutineClient) {
 
 
     suspend fun sumBy(session: AppSession): BigDecimal {
-//        val userCollection = db.getCollection<SysUser>(session.name!!)
+//        val userCollection = db.getCollection<SysUser>("")
 //        val result = userCollection.aggregate<Result>(
 //            group(
 //                SysUser::userName,

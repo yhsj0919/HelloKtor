@@ -26,6 +26,7 @@ fun StatusPages.Configuration.statusPage() {
         call.respond(HttpStatusCode.OK, CommonResp.error(msg = "服务器异常"))
     }
     exception<Exception> {
+        it.printStackTrace()
         call.respond(
             HttpStatusCode.OK, when (it) {
                 is MongoWriteException -> {
@@ -53,8 +54,6 @@ fun StatusPages.Configuration.statusPage() {
                     CommonResp.error(msg = "JSON数据转换错误")
                 }
                 else -> {
-                    it.printStackTrace()
-                    println("出现错误:" + it.message)
                     CommonResp.error(msg = "服务器异常")
                 }
             }

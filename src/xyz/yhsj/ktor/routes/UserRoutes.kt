@@ -28,8 +28,8 @@ fun Route.userRoutes() {
         /**
          * 注册
          */
-        postExt<SysUser>("/register", ValidationGroup.Add::class.java) { user, _ ->
-            userService.register(user)
+        postExt<SysUser>("/register", ValidationGroup.Add::class.java) { user, session ->
+            userService.register(user,session)
         }
 
         /**
