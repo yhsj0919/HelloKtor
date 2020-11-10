@@ -1,5 +1,6 @@
 package xyz.yhsj.ktor.entity.common
 
+import com.mongodb.DBRef
 import org.litote.kmongo.Id
 import xyz.yhsj.ktor.entity.company.SysCompany
 import xyz.yhsj.ktor.entity.user.SysUser
@@ -17,11 +18,9 @@ open class BaseEntity(
     //公司Id
     var companyId: Id<SysCompany>? = null,
     //公司
-    @Transient
     var company: SysCompany? = null,
     //创建人Id
     var creatorId: Id<SysUser>? = null,
     //创建人
-    @Transient
     var creator: SysUser? = null,
 )
