@@ -37,7 +37,7 @@ class AppSession(var user: String? = null, var time: Long = Date().time) : Princ
 fun Sessions.Configuration.setSession() {
     //这里开启了一个携程，尝试删除过期的session文件
     //替换掉了原有的directorySessionStorage
-    cookie<AppSession>("App_SESSION", appSessionStorage(File(SessionDirectory), timeOut = 60 * 60 * 1000)) {
+    cookie<AppSession>("App_SESSION", appSessionStorage(File(SessionDirectory), timeOut = 24* 60 * 60 * 1000)) {
         cookie.extensions["SameSite"] = "lax"
     }
 }

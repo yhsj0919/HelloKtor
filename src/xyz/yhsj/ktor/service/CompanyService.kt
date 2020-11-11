@@ -30,22 +30,22 @@ class CompanyService(private val db: CoroutineClient) {
         val page = params.page ?: 0
         val size = params.size ?: 10
         val count = companyDB.countDocuments()
-//        val result = companyDB.aggregate<SysCompany>(
-//            skip(page * size),
-//            limit(size),
-//            lookup(from = "sysUser", localField = "creatorId", foreignField = "_id", newAs = "users"),
-//            unwind("\$users"),
-//            project(
-//                SysCompany::creator from "\$users",
-//                *SysCompany::class.memberProperties
-//                    .filter { it != SysCompany::creator }
-//                    .map {
-//                        it from it
-//                    }.toTypedArray()
-//            ),
-//        ).toList()
+        val result = companyDB.aggregate<SysCompany>(
+            skip(page * size),
+            limit(size),
+            lookup(from = "sysUser", localField = "creatorId", foreignField = "_id", newAs = "users"),
+            unwind("\$users"),
+            project(
+                SysCompany::creator from "\$users",
+                *SysCompany::class.memberProperties
+                    .filter { it != SysCompany::creator }
+                    .map {
+                        it from it
+                    }.toTypedArray()
+            ),
+        ).toList()
 
-        val result = companyDB.find().skip(page * size).limit(size).toList()
+//        val result = companyDB.find().skip(page * size).limit(size).toList()
 
         val data = PageUtil(page = page, size = size, totalElements = count, content = result)
 

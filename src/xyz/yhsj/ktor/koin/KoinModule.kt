@@ -1,7 +1,6 @@
 package xyz.yhsj.ktor.koin
 
 import org.koin.dsl.module
-import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 import xyz.yhsj.ktor.service.CompanyService
