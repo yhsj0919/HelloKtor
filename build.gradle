@@ -61,7 +61,7 @@ dependencies {
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
     // Koin for Ktor Kotlin
-    implementation "org.koin:koin-ktor:2.1.6"
+    implementation "org.koin:koin-ktor:2.2.0"
 
     implementation 'org.litote.kmongo:kmongo:4.2.0'
     implementation 'org.litote.kmongo:kmongo-coroutine:4.2.0'
