@@ -1,6 +1,7 @@
 package xyz.yhsj.ktor.service
 
 import com.mongodb.DBRef
+import com.mongodb.client.model.UnwindOptions
 import io.ktor.utils.io.*
 import org.bson.types.ObjectId
 import org.litote.kmongo.*
@@ -34,7 +35,7 @@ class CompanyService(private val db: CoroutineClient) {
             skip(page * size),
             limit(size),
             lookup(from = "sysUser", localField = "creatorId", foreignField = "_id", newAs = "users"),
-            unwind("\$users"),
+            unwind("\$users", UnwindOptions().preserveNullAndEmptyArrays(true)),
             project(
                 SysCompany::creator from "\$users",
                 *SysCompany::class.memberProperties
@@ -63,7 +64,7 @@ class CompanyService(private val db: CoroutineClient) {
         company.company = null
 
 
-        companyDB.insertMany((0..100).map {
+        companyDB.insertMany((0..10).map {
             val ss = company.copy(id = newId())
             ss.deleted = 0
             ss.creatorId = sessions.getUser()?.id
