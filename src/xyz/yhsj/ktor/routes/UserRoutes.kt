@@ -18,7 +18,7 @@ fun Route.userRoutes() {
     postExt<SysUser>("/login", ValidationGroup.Login::class.java) { user, _ ->
         val rasp = userService.login(user)
         if (rasp.isSuccess()) {
-            call.setSession(AppSession(user = (rasp.data as SysUser?)?.json()))
+            call.setSession(AppSession(user = (rasp.data as SysUser?)))
         }
         rasp
     }

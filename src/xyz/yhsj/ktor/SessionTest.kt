@@ -24,7 +24,7 @@ suspend fun main() {
     }.forEach {
 
 
-        println(it.getUser()?.userName)
+        println(it.user?.userName)
     }
 
 //    try {

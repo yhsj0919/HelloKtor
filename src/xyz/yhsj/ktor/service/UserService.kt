@@ -2,12 +2,8 @@ package xyz.yhsj.ktor.service
 
 import com.mongodb.client.model.IndexOptions
 import com.mongodb.client.model.Indexes
-import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.coroutine.CoroutineClient
-import org.litote.kmongo.coroutine.commitTransactionAndAwait
 import org.litote.kmongo.eq
-import org.litote.kmongo.group
-import org.litote.kmongo.newId
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.dbName
 import xyz.yhsj.ktor.entity.resp.CommonResp
@@ -15,12 +11,11 @@ import xyz.yhsj.ktor.entity.user.SysPassword
 import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.getCollection
 import java.math.BigDecimal
-import java.util.*
 
 
 class UserService(private val db: CoroutineClient) {
-    val userDB by lazy { db.getCollection<SysUser>(dbName) }
-    val pwdDB by lazy { db.getCollection<SysPassword>(dbName) }
+    private val userDB by lazy { db.getCollection<SysUser>(dbName) }
+    private val pwdDB by lazy { db.getCollection<SysPassword>(dbName) }
 
     /**
      * 登录
@@ -58,7 +53,7 @@ class UserService(private val db: CoroutineClient) {
     suspend fun register(params: SysUser, session: AppSession): Any {
         val user = params.copy(type = 0)
         user.deleted = 0
-        user.companyId = session.getUser()?.companyId
+        user.companyId = session.user?.companyId
         userDB.insertOne(user)
         pwdDB.insertOne(SysPassword(user = user.id, password = user.passWord))
         return CommonResp.success()

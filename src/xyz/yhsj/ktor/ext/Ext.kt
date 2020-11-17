@@ -1,5 +1,6 @@
 package xyz.yhsj.ktor.ext
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.ktor.application.*
 import io.ktor.http.*
@@ -16,7 +17,7 @@ import xyz.yhsj.ktor.validator.ValidationUtils
 import java.lang.reflect.Modifier
 import java.text.DateFormat
 
-val gson = GsonBuilder().setDateFormat(DateFormat.LONG).setPrettyPrinting().excludeFieldsWithModifiers(Modifier.STATIC)
+val gson: Gson = GsonBuilder().setDateFormat(DateFormat.LONG).setPrettyPrinting().excludeFieldsWithModifiers(Modifier.STATIC)
     .registerTypeHierarchyAdapter(Id::class.java, IdSerializer()).create()
 
 //json序列化
@@ -28,7 +29,7 @@ fun Any?.json(): String =
     }
 
 //json反序列化
-inline fun <reified T> fromJson(json: String) = gson.fromJson(json, T::class.java)
+inline fun <reified T> fromJson(json: String): T = gson.fromJson(json, T::class.java)
 
 /**
  * 获取sessionId
@@ -61,7 +62,7 @@ inline fun <reified T> ApplicationCall.sessionOrNull(): T? {
 /**
  * 根据泛型新建对象
  */
-inline fun <reified T : Any> new(vararg params: Any) =
+inline fun <reified T : Any> new(vararg params: Any): T =
     T::class.java.getDeclaredConstructor(*params.map { it::class.java }.toTypedArray()).apply { isAccessible = true }
         .newInstance(*params)
 
@@ -90,7 +91,7 @@ inline fun <reified T : Any> CoroutineClient.getCollection(dbName: String) = thi
 /**
  * 数据校验
  */
-suspend fun <T : Any> T.validated(vararg groups: Class<*>, block: suspend (data: T) -> Any): Any? {
+suspend fun <T : Any> T.validated(vararg groups: Class<*>, block: suspend (data: T) -> Any): Any {
     val result = ValidationUtils.validateEntity(this, *groups)
     return if (result.hasErrors) {
         CommonResp.error(msg = result.errorMsg?.values?.first() ?: "未知参数错误")

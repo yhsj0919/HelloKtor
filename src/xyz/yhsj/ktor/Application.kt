@@ -17,6 +17,7 @@ import xyz.yhsj.ktor.auth.sessionCheck
 import xyz.yhsj.ktor.auth.setSession
 import xyz.yhsj.ktor.ext.IdSerializer
 import xyz.yhsj.ktor.koin.koinModule
+import xyz.yhsj.ktor.redis.Redis
 import xyz.yhsj.ktor.routes.commonRoutes
 import xyz.yhsj.ktor.routes.companyRoutes
 import xyz.yhsj.ktor.routes.userRoutes
@@ -45,6 +46,13 @@ fun Application.module(testing: Boolean = false) {
     install(Sessions) {
         setSession()
     }
+
+    install(Redis) {
+        // configruation for redis to connect
+        url = "redis://127.0.0.1:6379/0?timeout=10s"
+    }
+
+
     //请求头
     install(AutoHeadResponse)
     //日志

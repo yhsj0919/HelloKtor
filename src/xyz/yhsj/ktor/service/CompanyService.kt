@@ -1,20 +1,14 @@
 package xyz.yhsj.ktor.service
 
-import com.mongodb.DBRef
 import com.mongodb.client.model.UnwindOptions
-import io.ktor.utils.io.*
-import org.bson.types.ObjectId
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.aggregate
-import org.litote.kmongo.unwind
-
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.dbName
 import xyz.yhsj.ktor.entity.company.SysCompany
 import xyz.yhsj.ktor.entity.resp.CommonResp
 import xyz.yhsj.ktor.entity.resp.PageUtil
-import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.getCollection
 import kotlin.reflect.full.memberProperties
 
@@ -22,7 +16,7 @@ import kotlin.reflect.full.memberProperties
  * 公司
  */
 class CompanyService(private val db: CoroutineClient) {
-    val companyDB by lazy { db.getCollection<SysCompany>(dbName) }
+    private val companyDB by lazy { db.getCollection<SysCompany>(dbName) }
 
     /**
      * 获取公司
@@ -59,7 +53,7 @@ class CompanyService(private val db: CoroutineClient) {
     suspend fun addCompany(params: SysCompany, sessions: AppSession): Any {
         val company = params.copy(status = 0)
         company.deleted = 0
-        company.creatorId = sessions.getUser()?.id
+        company.creatorId = sessions.user?.id
         company.creator = null
         company.company = null
 
@@ -67,7 +61,7 @@ class CompanyService(private val db: CoroutineClient) {
         companyDB.insertMany((0..10).map {
             val ss = company.copy(id = newId())
             ss.deleted = 0
-            ss.creatorId = sessions.getUser()?.id
+            ss.creatorId = sessions.user?.id
             ss
         })
 

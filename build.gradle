@@ -65,4 +65,5 @@ dependencies {
 
     implementation 'org.litote.kmongo:kmongo:4.2.0'
     implementation 'org.litote.kmongo:kmongo-coroutine:4.2.0'
+    implementation 'io.lettuce:lettuce-core:6.0.1.RELEASE'
 }

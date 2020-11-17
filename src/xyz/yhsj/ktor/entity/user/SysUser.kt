@@ -31,4 +31,4 @@ data class SysUser(
     //-1系统管理员，0普通人员
     var type: Int? = 0,
 
-) : BaseEntity()
+    ) : BaseEntity()
