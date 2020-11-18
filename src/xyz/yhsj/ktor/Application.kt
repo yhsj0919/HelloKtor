@@ -28,7 +28,6 @@ import java.text.DateFormat
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@InternalAPI
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
@@ -41,17 +40,15 @@ fun Application.module(testing: Boolean = false) {
 //            permanentRedirect = true
 //        }
 //    }
-
-    //Cookie支持
-    install(Sessions) {
-        setSession()
-    }
-
     install(Redis) {
         // configruation for redis to connect
         url = "redis://127.0.0.1:6379/0?timeout=10s"
     }
 
+    //Cookie支持
+    install(Sessions) {
+        setSession()
+    }
 
     //请求头
     install(AutoHeadResponse)

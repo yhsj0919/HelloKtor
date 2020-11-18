@@ -15,18 +15,22 @@ import java.util.*
 
 class AppSession(var user: SysUser? = null, var time: Long = Date().time) : Principal
 
-@InternalAPI
 fun Sessions.Configuration.setSession() {
-    //这里开启了一个携程，尝试删除过期的session文件
+    //这里使用了redis管理session
     //替换掉了原有的directorySessionStorage
-    cookie<AppSession>("App_SESSION", redisSessionStorage(timeOut = 24 * 60 * 60)) {
+    cookie<AppSession>("App_SESSION", RedisSessionStorage(timeOut = 24 * 60 * 60)) {
         cookie.extensions["SameSite"] = "lax"
+        //使用Gson 序列化session
         serializer = GsonSessionSerializer(type)
     }
 }
 
-
+/**
+ * session校验
+ * 下面两种校验方式只是为了验证功能
+ */
 fun Authentication.Configuration.sessionCheck() {
+    //admin校验
     session<AppSession>(name = "admin") {
         challenge {
             val session = call.sessionOrNull<AppSession>()
@@ -45,7 +49,7 @@ fun Authentication.Configuration.sessionCheck() {
             }
         }
     }
-
+    //基础校验
     session<AppSession>(name = "basic") {
         challenge {
             val session = call.sessionOrNull<AppSession>()
