@@ -6,6 +6,7 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
@@ -20,6 +21,7 @@ import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.redis.Redis
 import xyz.yhsj.ktor.routes.commonRoutes
 import xyz.yhsj.ktor.routes.companyRoutes
+import xyz.yhsj.ktor.routes.permissionRoutes
 import xyz.yhsj.ktor.routes.userRoutes
 import xyz.yhsj.ktor.status.statusPage
 import java.lang.reflect.Modifier
@@ -104,8 +106,11 @@ fun Application.module(testing: Boolean = false) {
     }
     //拦截器
 //    intercept(ApplicationCallPipeline.Call) {
-//        val session = call.sessions.get<MySession>() ?: MySession()
-//        println(">>>>>>>>>>>>>>>>>>>>" + session.name)
+//        //可以根据随机数拦截每一次请求，防止该cookie跳跃请求
+//        println(">>>>>>请求随机数>>>>>>>" + call.request.cookies.rawCookies["random"])
+//        val random = (Math.random() * 100000).toInt()
+//        call.response.cookies.append("random", random.toString())
+//        println(">>>>>>>>返回随机数>>>>>>>>>>>>$random")
 //    }
 
 
@@ -113,6 +118,7 @@ fun Application.module(testing: Boolean = false) {
         //这个是带权限验证的，可以校验不同的权限
         authenticate("admin") {
             companyRoutes()
+            permissionRoutes()
         }
         authenticate("basic") {
             userRoutes()

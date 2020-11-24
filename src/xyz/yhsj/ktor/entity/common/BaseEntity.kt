@@ -1,6 +1,5 @@
 package xyz.yhsj.ktor.entity.common
 
-import com.mongodb.DBRef
 import org.litote.kmongo.Id
 import xyz.yhsj.ktor.entity.company.SysCompany
 import xyz.yhsj.ktor.entity.user.SysUser
