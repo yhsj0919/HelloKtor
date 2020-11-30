@@ -26,7 +26,8 @@ class PermissionService(private val db: CoroutineClient) {
     }
 
     private fun getTree(list: List<SysPermission>, parent: Id<SysPermission>?): List<SysPermission> {
-        return list.filter { it.parent == parent }.map { item -> item.child = getTree(list, item.id);item }.toList()
+        return list.filter { it.parent == parent }.map { item -> item.child = getTree(list, item.id);item }
+            .sortedBy { it.weight }.toList()
     }
 
     /**

@@ -6,11 +6,9 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.request.*
-import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.sessions.*
-import io.ktor.util.*
 import org.koin.ktor.ext.Koin
 import org.litote.kmongo.Id
 import org.slf4j.event.Level
@@ -27,12 +25,43 @@ import xyz.yhsj.ktor.status.statusPage
 import java.lang.reflect.Modifier
 import java.text.DateFormat
 
-
+//配置文件初始化
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+//代码初始化
+//fun main(args: Array<String>) {
+//    val env = applicationEngineEnvironment {
+//        module {
+//            module()
+//        }
+//这里可以配置监听多个端口，然后根据端口请求不同的接口
+//        // Private API
+//        connector {
+//            host = "127.0.0.1"
+//            port = 9090
+//        }
+//        // Public API
+//        connector {
+//            host = "0.0.0.0"
+//            port = 8080
+//        }
+//
+//        sslConnector(keyStore = keyStore, keyAlias = "mykey", keyStorePassword = { "changeit".toCharArray() }, privateKeyPassword = { "changeit".toCharArray() }) {
+//            port = 9091
+//            keyStorePath = keyStoreFile.absoluteFile
+//        }
+//
+//    }
+//    embeddedServer(Netty, env).apply {
+//        start(wait = true)
+//    }
+//}
+
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
 
 //    if (!testing) {
 //        install(HttpsRedirect) {
@@ -105,13 +134,17 @@ fun Application.module(testing: Boolean = false) {
         sessionCheck()
     }
     //拦截器
-//    intercept(ApplicationCallPipeline.Call) {
-//        //可以根据随机数拦截每一次请求，防止该cookie跳跃请求
+    intercept(ApplicationCallPipeline.Call) {
+
+        println("host:" + call.request.host() + ":" + call.request.port() + call.request.path())
+
+
+        //可以根据随机数拦截每一次请求，防止该cookie跳跃请求
 //        println(">>>>>>请求随机数>>>>>>>" + call.request.cookies.rawCookies["random"])
 //        val random = (Math.random() * 100000).toInt()
 //        call.response.cookies.append("random", random.toString())
 //        println(">>>>>>>>返回随机数>>>>>>>>>>>>$random")
-//    }
+    }
 
 
     routing {

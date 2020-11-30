@@ -20,7 +20,7 @@ class IdSerializer : JsonSerializer<Id<*>?>, JsonDeserializer<Id<*>?> {
         typeOfT: Type,
         context: JsonDeserializationContext
     ): Id<*>? {
-        return if (json.isJsonNull) {
+        return if (json.isJsonNull || json.asString.isNullOrEmpty()) {
             null
         } else {
             IdGenerator.defaultGenerator.create(json.asString)
