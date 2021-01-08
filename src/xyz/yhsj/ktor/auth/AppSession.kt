@@ -48,6 +48,10 @@ fun Authentication.Configuration.sessionCheck() {
                 session
             }
         }
+        skipWhen { call ->
+            val skipPath = arrayListOf("/admin/login")
+            call.request.path() in skipPath
+        }
     }
     //基础校验
     session<AppSession>(name = "basic") {

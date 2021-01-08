@@ -6,6 +6,7 @@ import org.koin.ktor.ext.inject
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.entity.user.SysUser
 import xyz.yhsj.ktor.ext.*
+import xyz.yhsj.ktor.service.AdminService
 import xyz.yhsj.ktor.service.UserService
 import xyz.yhsj.ktor.validator.ValidationGroup
 

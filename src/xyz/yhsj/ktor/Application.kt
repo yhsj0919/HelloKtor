@@ -17,10 +17,7 @@ import xyz.yhsj.ktor.auth.setSession
 import xyz.yhsj.ktor.ext.IdSerializer
 import xyz.yhsj.ktor.koin.koinModule
 import xyz.yhsj.ktor.redis.Redis
-import xyz.yhsj.ktor.routes.commonRoutes
-import xyz.yhsj.ktor.routes.companyRoutes
-import xyz.yhsj.ktor.routes.permissionRoutes
-import xyz.yhsj.ktor.routes.userRoutes
+import xyz.yhsj.ktor.routes.*
 import xyz.yhsj.ktor.status.statusPage
 import java.lang.reflect.Modifier
 import java.text.DateFormat
@@ -150,8 +147,8 @@ fun Application.module(testing: Boolean = false) {
     routing {
         //这个是带权限验证的，可以校验不同的权限
         authenticate("admin") {
+            adminRoutes()
             companyRoutes()
-            permissionRoutes()
         }
         authenticate("basic") {
             userRoutes()
