@@ -38,10 +38,13 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+//https://imperceptiblethoughts.com/shadow/
 shadowJar {
-    baseName = 'ktor-sample'
-    classifier = null
-    version = '1.0.0'
+    //删除无用依赖
+    //minimize()
+    archiveBaseName.set('ktor-sample')
+    archiveClassifier.set('')
+    archiveVersion.set('1.0.0')
 }
 
 
@@ -61,9 +64,10 @@ dependencies {
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
     // Koin for Ktor Kotlin
-    implementation "org.koin:koin-ktor:2.2.0"
+    implementation "org.koin:koin-ktor:2.2.2"
 
-    implementation 'org.litote.kmongo:kmongo:4.2.2'
-    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.2'
-    implementation 'io.lettuce:lettuce-core:6.0.1.RELEASE'
+    implementation 'org.litote.kmongo:kmongo:4.2.4'
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.4'
+    //Redis
+    implementation 'io.lettuce:lettuce-core:6.0.2.RELEASE'
 }
