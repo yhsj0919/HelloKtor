@@ -15,7 +15,7 @@ import xyz.yhsj.ktor.validator.ValidationGroup
 /**
  * 公司
  */
-fun Route.companyRoutes() {
+fun Route.companyRoute() {
     val companyService by inject<CompanyService>()
 
     route("/company") {

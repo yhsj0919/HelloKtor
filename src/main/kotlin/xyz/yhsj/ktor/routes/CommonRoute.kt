@@ -7,7 +7,7 @@ import io.ktor.routing.*
 import xyz.yhsj.ktor.auth.AppSession
 import xyz.yhsj.ktor.ext.session
 
-fun Route.commonRoutes() {
+fun Route.commonRoute() {
     get("/") {
         call.respondRedirect("/index.html", permanent = true)
     }

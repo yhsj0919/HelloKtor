@@ -10,7 +10,7 @@ import xyz.yhsj.ktor.service.AdminService
 import xyz.yhsj.ktor.service.UserService
 import xyz.yhsj.ktor.validator.ValidationGroup
 
-fun Route.userRoutes() {
+fun Route.userRoute() {
     val userService by inject<UserService>()
 //    val logger: Logger = LoggerFactory.getLogger("userRoutes")
     /**

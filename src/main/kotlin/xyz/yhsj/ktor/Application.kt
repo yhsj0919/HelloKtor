@@ -94,6 +94,7 @@ fun Application.module(testing: Boolean = false) {
         header(HttpHeaders.Authorization)
         header("MyCustomHeader")
         allowCredentials = true
+        allowNonSimpleContentTypes=true
         anyHost()
     }
     //关机地址
@@ -144,14 +145,14 @@ fun Application.module(testing: Boolean = false) {
     routing {
         //这个是带权限验证的，可以校验不同的权限
         authenticate("admin") {
-            adminRoutes()
-            companyRoutes()
+            adminRoute()
+            companyRoute()
         }
         authenticate("basic") {
-            userRoutes()
+            userRoute()
         }
         //下面的不含权限验证
-        commonRoutes()
+        commonRoute()
     }
 
 

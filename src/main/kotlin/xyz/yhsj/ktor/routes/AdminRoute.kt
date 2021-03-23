@@ -12,7 +12,7 @@ import xyz.yhsj.ktor.service.AdminService
 import xyz.yhsj.ktor.service.PermissionService
 import xyz.yhsj.ktor.validator.ValidationGroup
 
-fun Route.adminRoutes() {
+fun Route.adminRoute() {
     val adminService by inject<AdminService>()
     val permissionService by inject<PermissionService>()
     route("/admin") {
