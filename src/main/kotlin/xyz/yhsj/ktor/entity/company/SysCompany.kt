@@ -27,8 +27,18 @@ data class SysCompany(
     @field:NotNull(message = "到期时间不可为空", groups = [ValidationGroup.Add::class])
     var expirationTime: Long? = null,
     //状态0,正常,1禁用
-    var status: Int? = null,
+    var status: Int? = 0,
+    //短信通知,0无权限，1有权限
+    var smsNotification: Int? = 0,
+    //短信通知数量
+    var smsCount: Int? = 0,
+    //短信通知总数
+    var smsTotal: Int? = 0,
+    //纬度
+    var latitude: String? = null,
+    //经度
+    var longitude: String? = null,
+    //地址
+    var address: String? = null,
 
-    var lat: Float? = null,
-    var lon: Float? = null,
-) : BaseEntity()
+    ) : BaseEntity()

@@ -56,15 +56,7 @@ class CompanyService(private val db: CoroutineClient) {
         company.creatorId = sessions.user?.id
         company.creator = null
         company.company = null
-
-
-        companyDB.insertMany((0..10).map {
-            val ss = company.copy(id = newId())
-            ss.deleted = 0
-            ss.creatorId = sessions.user?.id
-            ss
-        })
-
+        companyDB.insertOne(company)
         return CommonResp.success(data = company)
     }
 }
