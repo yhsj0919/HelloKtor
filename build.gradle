@@ -47,10 +47,13 @@ dependencies {
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
     // Koin for Ktor Kotlin
+    //https://github.com/InsertKoinIO/koin
     implementation "org.koin:koin-ktor:2.2.2"
 
-    implementation 'org.litote.kmongo:kmongo:4.2.4'
-    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.4'
+    //https://github.com/Litote/kmongo
+    implementation 'org.litote.kmongo:kmongo:4.2.6'
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.6'
     //Redis
-    implementation 'io.lettuce:lettuce-core:6.0.2.RELEASE'
+    //https://github.com/lettuce-io/lettuce-core
+    implementation 'io.lettuce:lettuce-core:6.1.0.RELEASE'
 }
