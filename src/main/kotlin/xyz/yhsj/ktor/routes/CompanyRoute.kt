@@ -20,11 +20,11 @@ fun Route.companyRoute() {
 
     route("/company") {
         //获取
-        postExt<SysCompany>("/getCompany") { sysCompany, appSession ->
+        postExt<SysCompany>("/get") { sysCompany, appSession ->
             companyService.getCompany(sysCompany, appSession)
         }
         //添加
-        postExt<SysCompany>("/addCompany", ValidationGroup.Add::class.java) { sysCompany, appSession ->
+        postExt<SysCompany>("/add", ValidationGroup.Add::class.java) { sysCompany, appSession ->
             companyService.addCompany(sysCompany, appSession)
         }
 

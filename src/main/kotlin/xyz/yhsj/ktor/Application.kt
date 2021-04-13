@@ -145,7 +145,7 @@ fun Application.module(testing: Boolean = false) {
     routing {
         //这个是带权限验证的，可以校验不同的权限
         authenticate("admin") {
-            adminRoute()
+            permissionRoute()
             companyRoute()
         }
         authenticate("basic") {
