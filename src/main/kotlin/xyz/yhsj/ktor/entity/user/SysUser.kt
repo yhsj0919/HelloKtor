@@ -12,7 +12,10 @@ data class SysUser(
     @field:NotBlank(message = "ID不可为空", groups = [ValidationGroup.Update::class, ValidationGroup.Delete::class])
     @BsonId
     val id: Id<SysUser>? = null,
-    @field: NotBlank(message = "用户名不可为空", groups = [ValidationGroup.Login::class, ValidationGroup.Add::class])
+    @field: NotBlank(
+        message = "用户名不可为空",
+        groups = [ValidationGroup.Login::class, ValidationGroup.Add::class, ValidationGroup.Admin::class]
+    )
     @field:Pattern(
         regexp = "^[1][3456789]\\d{9}\$",
         message = "账号只能为手机号",
@@ -26,7 +29,10 @@ data class SysUser(
     //Gson序列化反序列化忽略，
     //@Expose(serialize = true, deserialize = true)
     @Transient
-    @field: NotBlank(message = "密码不可为空", groups = [ValidationGroup.Login::class, ValidationGroup.Add::class])
+    @field: NotBlank(
+        message = "密码不可为空",
+        groups = [ValidationGroup.Login::class, ValidationGroup.Add::class, ValidationGroup.Admin::class]
+    )
     var passWord: String? = null,
     //-1系统管理员，0普通人员
     var type: Int? = 0,

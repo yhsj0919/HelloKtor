@@ -10,4 +10,6 @@ class ValidationGroup {
     interface Update
 
     interface Delete
+
+    interface Admin
 }

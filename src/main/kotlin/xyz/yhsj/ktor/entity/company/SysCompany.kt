@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull
  * 公司
  */
 data class SysCompany(
-    @field:NotBlank(message = "ID不可为空", groups = [ValidationGroup.Update::class, ValidationGroup.Delete::class])
+    @field:NotNull(message = "ID不可为空", groups = [ValidationGroup.Update::class, ValidationGroup.Delete::class])
     @BsonId
     val id: Id<SysCompany>? = null,
     //公司名称
