@@ -7,10 +7,3 @@ import xyz.yhsj.ktor.service.CompanyService
 import xyz.yhsj.ktor.service.PermissionService
 import xyz.yhsj.ktor.service.UserService
 
-val koinModule = module {
-    single { KMongo.createClient("mongodb://127.0.0.1:27017").coroutine }
-
-    single { CompanyService(db = get()) }
-    single { UserService(db = get()) }
-    single { PermissionService(db = get()) }
-}
