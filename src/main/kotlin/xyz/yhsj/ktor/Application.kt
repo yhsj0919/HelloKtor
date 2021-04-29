@@ -1,6 +1,5 @@
 package xyz.yhsj.ktor
 
-import com.typesafe.config.ConfigFactory
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import xyz.yhsj.ktor.plugins.*
@@ -8,7 +7,7 @@ import xyz.yhsj.ktor.plugins.*
 
 fun main() {
 
-    embeddedServer(Netty, port = 8080) {
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         configureSerialization()
         configureHTTP()
         configureKoin()
@@ -48,14 +47,14 @@ fun main() {
 //            port = 8080
 //        }
 //
-////        sslConnector(
-////            keyStore = keyStore,
-////            keyAlias = "mykey",
-////            keyStorePassword = { "changeit".toCharArray() },
-////            privateKeyPassword = { "changeit".toCharArray() }) {
-////            port = 9091
-////            keyStorePath = keyStoreFile.absoluteFile
-////        }
+//        sslConnector(
+//            keyStore = keyStore,
+//            keyAlias = "mykey",
+//            keyStorePassword = { "changeit".toCharArray() },
+//            privateKeyPassword = { "changeit".toCharArray() }) {
+//            port = 9091
+//            keyStorePath = keyStoreFile.absoluteFile
+//        }
 //
 //    }
 //    embeddedServer(Netty, env).apply {

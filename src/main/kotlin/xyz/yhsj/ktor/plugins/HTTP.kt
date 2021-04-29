@@ -21,7 +21,7 @@ fun Application.configureHTTP() {
         allowNonSimpleContentTypes = true
         anyHost()
     }
-
+    //HTTPS转发
 //    install(HttpsRedirect) {
 //        // The port to redirect to. By default 443, the default HTTPS port.
 //        sslPort = 443
