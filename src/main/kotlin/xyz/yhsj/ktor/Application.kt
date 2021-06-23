@@ -1,24 +1,24 @@
 package xyz.yhsj.ktor
 
+import io.ktor.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import xyz.yhsj.ktor.plugins.*
 
 
-fun main() {
-
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
-        configureSerialization()
-        configureHTTP()
-        configureKoin()
-        configureRedis()
-        configureSecurity()
-        configureIntercept()
-        configureAdministration()
-        configureMonitoring()
-        configureRouting()
-    }.start(wait = true)
-}
+//fun main() {
+//    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+//        configureSerialization()
+//        configureHTTP()
+//        configureKoin()
+//        configureRedis()
+//        configureSecurity()
+//        configureIntercept()
+//        configureAdministration()
+//        configureMonitoring()
+//        configureRouting()
+//    }.start(wait = true)
+//}
 
 
 //代码初始化
@@ -61,6 +61,24 @@ fun main() {
 //        start(wait = true)
 //    }
 //}
+
+
+fun main(args: Array<String>): Unit = EngineMain.main(args)
+
+@Suppress("unused") // Referenced in application.conf
+@kotlin.jvm.JvmOverloads
+fun Application.module(testing: Boolean = false) {
+    configureSerialization()
+    configureHTTP()
+    configureKoin()
+    configureRedis()
+    configureSecurity()
+    configureIntercept()
+    configureAdministration()
+    configureMonitoring()
+    configureRouting()
+}
+
 
 
 
