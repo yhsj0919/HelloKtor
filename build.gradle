@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
@@ -43,12 +43,12 @@ dependencies {
     implementation "javax.validation:validation-api:2.0.1.Final"
     implementation "org.hibernate.validator:hibernate-validator:6.0.9.Final"
     implementation "javax.el:javax.el-api:3.0.0"
-    implementation "org.glassfish.web:javax.el:2.2.4"
+    implementation 'org.glassfish.web:javax.el:2.2.6'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
     // Koin for Ktor Kotlin
     //https://github.com/InsertKoinIO/koin
-    implementation "io.insert-koin:koin-ktor:3.1.0"
+    implementation 'io.insert-koin:koin-ktor:3.1.1'
 
     //https://github.com/Litote/kmongo
     implementation 'org.litote.kmongo:kmongo:4.2.8'

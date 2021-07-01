@@ -1,11 +1,11 @@
 package xyz.yhsj.ktor.validator
 
 
+import org.hibernate.validator.HibernateValidator
 import java.util.*
 import javax.validation.Validation
 import javax.validation.groups.Default
-import org.hibernate.validator.HibernateValidator
-import javax.validation.Validator
+
 
 /**
  * 校验工具
